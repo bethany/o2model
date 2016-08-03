@@ -196,7 +196,7 @@ MixStat = zeros(20,length(tt));
 i_fac = zeros(length(tt));
 Cond_out = zeros(Nz,length(tt));
 
-load '~/Desktop/Making_a_model/SAS1A_2layer/Oxygen/SAS1AO2.mat';
+load 'Oxygen/SAS1AO2.mat';
 Oxygenzt = zeros(Nz,length(tt));
 O2Factors_Surface = zeros(5,length(tt));
 O2Factors_Middle = zeros(5,length(tt));
@@ -353,7 +353,7 @@ R_bioz = min((Growth_bioz-Loss_bioz),(Y_cp*Pz./(Chlz*dt))); %growth rate is limi
 
    
 
-load '~/Desktop/Making_a_model/SAS1A_2layer/SAS1ASal.mat';
+load 'SAS1ASal.mat';
 Conddt = SAS1ASal';
 pressure = [0 0 0]';
 
@@ -404,7 +404,7 @@ pressure = [0 0 0]';
    Tz = Tz + dT;        %Temperature change after daytime surface heatfluxes (or whole day in ice covered period)
 
 
-load '~/Desktop/Making_a_model/SAS1A_2layer/KWGroundTemp_20142015.mat';
+load 'KWGroundTemp_20142015.mat';
 
 
 

@@ -9,8 +9,8 @@
 % http://shirt-ediss.me/matlab-octave-more-colours/
 
 % clear all;
-path(path,'~/Desktop/Making_a_model/SAS1A_2layer/Mylake_v12/air_sea'); %path for air-sea toolbox
-path(path,'~/Desktop/Making_a_model/SAS1A_2layer/Mylake_v12/v12');     %path for MyLake model code
+path(path,'Mylake_v12/air_sea'); %path for air-sea toolbox
+path(path,'Mylake_v12/v12');     %path for MyLake model code
 
 global ies80 Eevapor;
 test_time=0;
@@ -21,12 +21,12 @@ year=2014;
 m_start=[2014,09,05]; 
 m_stop= [2015,08,24];
 
-load '~/Desktop/Making_a_model/SAS1A_2layer/SAS1A_Temp_2014.csv';
+load 'SAS1A_Temp_2014.csv';
 temp1 = SAS1A_Temp_2014;
 
-initfile='~/Desktop/Making_a_model/SAS1A_2layer/SAS1A_init_2014.xlsx';
-inputfile='~/Desktop/Making_a_model/SAS1A_2layer/SAS1A_Met-Input_2014-2015_b.xlsx';
-parafile='~/Desktop/Making_a_model/SAS1A_2layer/SAS1A_parameters.xlsx';
+initfile='SAS1A_init_2014.xlsx';
+inputfile='SAS1A_Met-Input_2014-2015_b.xlsx';
+parafile='SAS1A_parameters.xlsx';
 
 tic
         [zz,Az,Vz,tt,Qst,Kzt,Tzt,Czt,Szt,Pzt,Chlzt,PPzt,DOPzt,DOCzt,Qzt_sed,lambdazt,...
@@ -256,7 +256,7 @@ time1 = datenum(temp1(:,1:6)); % creates dates from measured temperatures CSV.
 
 
 % Get data
-load('~/Desktop/Making_a_model/SAS1A_2layer/SAS1A_MetFile.mat');
+load('SAS1A_MetFile.mat');
 
 
 % *** subplot no.1 - Air Temperature ***
@@ -354,7 +354,7 @@ print('-r300','Fig3_MetData','-dpng')
 
 
 
-load '~/Desktop/Making_a_model/SAS1A_2layer/Oxygen/SAS1AO2.mat';
+load 'Oxygen/SAS1AO2.mat';
 
 figure (4) % plot of oxygen data
 clf;
