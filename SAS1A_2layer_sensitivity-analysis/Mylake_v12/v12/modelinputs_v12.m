@@ -94,19 +94,6 @@ In_Inflow=InputMx(3:end,11:18);
 
 tmet=datenum(In_Date);
 
-dum=100*((tmet(end)-tmet(1)+1)-length(tmet))/(tmet(end)-tmet(1)+1);
-disp(['Percent missing dates in meteorology and inflow data: ']);
-disp([num2str(dum) ' %']);
-
-dum=100*sum(isnan(In_Met))./length(tmet);
-disp(['Percent missing values in meteorology data (values correspond to columns 4-10 in input file): ']);
-disp([num2str(dum) ' %']);
-
-dum=100*sum(isnan(In_Inflow))./length(tmet);
-disp(['Percent missing values in inflow data (values correspond to columns 11-17 in input file): ']);
-disp([num2str(dum) ' %']);
-disp(' ')
-
 clear Wt
 for i=1:7 %Interpolate over missing values and dates
     nonnans = find(isnan(In_Met(:,i))==0);

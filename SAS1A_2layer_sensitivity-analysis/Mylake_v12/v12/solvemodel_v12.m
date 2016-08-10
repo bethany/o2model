@@ -6,9 +6,8 @@
 % Last modified by TSA, 15.08.2006 (temperature profile sent to convection.m, Thermocline-bug corrected)
 
 
-function [zz,Az,Vz,tt,Qst,Kzt,Tzt,Czt,Szt,Pzt,Chlzt,PPzt,DOPzt,DOCzt,Qzt_sed,lambdazt,...
-         P3zt_sed,P3zt_sed_sc,His,DoF,DoM,MixStat,Wt,i_fac,Cond_out,Tz,Oxygenzt,O2Factors_Surface,O2Factors_Bottom,O2Factors_Middle] = ...
-         solvemodel_v12(M_start,M_stop,Initfile,Initsheet,Inputfile,Inputsheet,Parafile,Parasheet,O2vars);
+function [Oxygenzt] = ...
+         solvemodel_v12(O2vars);
 
 
 warning off MATLAB:fzero:UndeterminedSyntax %suppressing a warning message
@@ -62,9 +61,28 @@ warning off MATLAB:fzero:UndeterminedSyntax %suppressing a warning message
 %       MixStat     : Temporary variables used in model testing, see code (N * tt)
 
 % These variables are still global and not transferred by functions
-global ies80;
+global ies80 Eevapor;
 
 tic
+
+path(path,'Mylake_v12/air_sea') %path for air-sea toolbox
+path(path,'Mylake_v12/v12')     %path for MyLake model code
+
+test_time=0;
+Eevapor=0;
+
+lake='SAS1A';
+year=2014;
+M_start=[2014,09,05]; 
+M_stop= [2015,08,24];
+
+Initfile='SAS1A_init_2014.xlsx';
+Initsheet='lake';
+Inputfile='SAS1A_Met-Input_2014-2015_b.xlsx';
+Inputsheet='timeseries';
+Parafile='SAS1A_parameters.xlsx';
+Parasheet='lake';
+
 disp(['Running MyLake from ' datestr(datenum(M_start)) ' to ' datestr(datenum(M_stop)) ' ...']);
 
 % ===Switches===
@@ -222,8 +240,8 @@ MixStat = zeros(20,length(tt));
 i_fac = zeros(length(tt));
 Cond_out = zeros(Nz,length(tt));
 
-load '~/Desktop/Making_a_model/SAS1A_2layer/Oxygen/SAS1AO2.mat';
-Oxygenzt = zeros(Nz,length(tt));
+load 'Oxygen/SAS1AO2.mat';
+Oxygenzt = zeros(1,length(tt));
 O2Factors_Surface = zeros(5,length(tt));
 O2Factors_Middle = zeros(5,length(tt));
 O2Factors_Bottom = zeros(5,length(tt));
@@ -379,7 +397,7 @@ R_bioz = min((Growth_bioz-Loss_bioz),(Y_cp*Pz./(Chlz*dt))); %growth rate is limi
 
    
 
-load '~/Desktop/Making_a_model/SAS1A_2layer/SAS1ASal.mat';
+load 'SAS1ASal.mat';
 Conddt = SAS1ASal';
 pressure = [1 1 1]';
 
@@ -427,7 +445,7 @@ pressure = [1 1 1]';
    Tz = Tz + dT;        %Temperature change after daytime surface heatfluxes (or whole day in ice covered period)
 
 
-load '~/Desktop/Making_a_model/SAS1A_2layer/KWGroundTemp_20142015.mat';
+load 'KWGroundTemp_20142015.mat';
 
 
 
@@ -877,7 +895,6 @@ end
       
       if(Hi<=0)
       IceIndicator=0;
-      disp(['Ice-off, ' datestr(datenum(M_start)+i-1)])
       XE_melt=(-Hi-(WEQs*rho_fw/rho_ice))*rho_ice*L_ice/(24*60*60); 
              %(W m-2) snow part is in case ice has melted from bottom leaving some snow on top (reducing XE_melt)
       Hi=0;
@@ -903,7 +920,6 @@ end
               Tz(Supercooled)=Tf;
               Tz(1)=Tf; %set temperature of the first layer to freezing point
               DoF(qq)=i;
-              disp(['Ice-on, ' datestr(datenum(M_start)+i-1)])
               qq=qq+1;
             end   
            
@@ -1259,7 +1275,7 @@ end
    DOCzt(:,i) = DOCz;
    Qzt_sed(:,i) = Qz_sed./(60*60*24*dt); %(J m-2 day-1) -> (W m-2)
    lambdazt(:,i) = lambdaz_wtot_avg;
-   Oxygenzt(:,i) = Oxygenz;
+   Oxygenzt(1,i) = Oxygenz(2);
    i_fac(1,i) = i;
    Cond_out(:,i) = Conddt(:,i);
 

@@ -3,7 +3,7 @@
 % Edited by BD for other applications, January 2014
 
 % Command to change to SAS1A directory:
-% cd('~/Desktop/Making_a_model/SAS1A_2layer');
+% cd('SAS1A_2layer_sensitivity-analysis');
 
 % Useful link for colours:
 % http://shirt-ediss.me/matlab-octave-more-colours/
@@ -15,8 +15,8 @@ Variances = zeros(3,18);
 
 for j = 1:37
 
-path(path,'~/Desktop/Making_a_model/SAS1A_2layer/Mylake_v12/air_sea') %path for air-sea toolbox
-path(path,'~/Desktop/Making_a_model/SAS1A_2layer/Mylake_v12/v12')     %path for MyLake model code
+path(path,'Mylake_v12/air_sea') %path for air-sea toolbox
+path(path,'Mylake_v12/v12')     %path for MyLake model code
 
 global ies80 Eevapor;
 test_time=0;
@@ -27,15 +27,15 @@ year=2014;
 m_start=[2014,09,05]; 
 m_stop= [2015,08,24];
 
-load '~/Desktop/Making_a_model/SAS1A_2layer/SAS1A_Temp_2014.csv';
+load 'SAS1A_Temp_2014.csv';
 temp1 = SAS1A_Temp_2014;
 
-initfile='~/Desktop/Making_a_model/SAS1A_2layer/SAS1A_init_2014.xlsx';
-inputfile='~/Desktop/Making_a_model/SAS1A_2layer/SAS1A_Met-Input_2014-2015_b.xlsx';
-parafile='~/Desktop/Making_a_model/SAS1A_2layer/SAS1A_parameters.xlsx';
+initfile='SAS1A_init_2014.xlsx';
+inputfile='SAS1A_Met-Input_2014-2015_b.xlsx';
+parafile='SAS1A_parameters.xlsx';
 
 
-	O2vars = importdata('~/Desktop/Making_a_model/SAS1A_2layer/O2vars.xlsx');
+	O2vars = importdata('O2vars.xlsx');
 	O2vars_working = zeros(1,18);
 
 	O2vars_working(1:end) = O2vars.data(j,1:end);

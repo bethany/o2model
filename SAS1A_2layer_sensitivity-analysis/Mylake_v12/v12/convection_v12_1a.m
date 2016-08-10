@@ -7,8 +7,8 @@
 % Code checked by TSA, 07.03.05
 % Last modified by TSA, 17.07.07
 
-function [Tz,Cz,Sz,Pz,Chlz,PPz,DOPz,DOCz] = ...
-    convection_v12_1a(Tz_in,Cz_in,Sz_in,Pz_in,Chlz_in,PPz_in,DOPz_in,DOCz_in,Tprof_prev,Vz,Cw,f_par,lambdaz_wtot_avg,zz,swa_b0,tracer_switch,springautumn,Cond_In);
+function [Tz,Cz,Sz,Pz,Chlz,PPz,DOPz,DOCz,Oxygenz] = ...
+    convection_v12_1a(Tz_in,Cz_in,Sz_in,Pz_in,Chlz_in,PPz_in,DOPz_in,DOCz_in,Tprof_prev,Vz,Cw,f_par,lambdaz_wtot_avg,zz,swa_b0,tracer_switch,springautumn,Cond_In,Oxygen_In);
 
 % Inputs (with extension "_in") and Outputs:
 %       Tz   : Temperature profile
@@ -24,7 +24,6 @@ function [Tz,Cz,Sz,Pz,Chlz,PPz,DOPz,DOCz] = ...
 %       Tprof_prev   : Temperature profile from previous timestep
 %       etc.
 
-
 % These variables are still global and not transferred by functions
 global ies80;
 
@@ -32,14 +31,11 @@ Trhomax=3.98; %temperature of maximum water density (deg C)
 Nz=length(zz); %total number of layers in the water column
 dz=zz(2)-zz(1); %model grid step
 
-pressure = [1 1]';
+pressure = [1 1 1]';
 
 % Convective mixing adjustment
 % Mix successive layers until stable density profile
-rho = gsw_rho(Cond_In,max(0,Tz_in(:)),pressure);	% Density (kg/m3)
-    % Cond_In,max(0,Tz_in(:)))+min(Tz_in(:),pressure
-
-
+rho = gsw_rho(Cond_In,max(0,Tz_in(:)),pressure);    % Density (kg/m3)
 d_rho=[diff(rho); 1]; %d_rho = how much a layer is lighter than layer below; last cell in "d_rho" is always positive (sediment)
 
 while any(d_rho < 0),
@@ -74,6 +70,9 @@ while any(d_rho < 0),
 
         DOCmix = sum(DOCz_in(j) .* Vz(j)) / sum(Vz(j));
         DOCz_in(j) = DOCmix * ones(size(DOCz_in(j)));
+
+        Oxygenmix = sum(Oxygen_In(j) .* Vz(j)) / sum(Vz(j));
+        Oxygen_In(j) = Oxygenmix * ones(size(Oxygen_In(j)));
     end
 
     rho = gsw_rho(Cond_In,max(0,Tz_in(:)),pressure);
@@ -115,3 +114,4 @@ PPz=PPz_in;
 Chlz=Chlz_in;
 DOPz=DOPz_in;
 DOCz=DOCz_in;
+Oxygenz=Oxygen_In;
